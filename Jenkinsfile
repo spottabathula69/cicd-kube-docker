@@ -75,7 +75,14 @@ pipeline {
 	stage("Buid App Image") {
 		steps {
 			script {
-				dockerImage = docker.build.registry + ":V$BUILD_NUMBER"
+				//dockerImage = docker.build.registry + ":V$BUILD_NUMBER"
+                def dockerImage = "${docker.build.registry}:V${BUILD_NUMBER}"
+                echo "Building Docker image: ${dockerImage}"
+                
+                // Build and push Docker image
+                docker.build(dockerImage, '.')
+                docker.withRegistry('https://my-docker-registry/', 'my-registry-credentials') {
+                docker.image(dockerImage).push()
 			}
 		}
 	}
