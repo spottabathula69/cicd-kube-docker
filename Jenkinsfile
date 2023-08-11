@@ -7,8 +7,8 @@ pipeline {
     }
 */
     environment {
-        registry = "spottabathula69/cicd-kube-docker"
-	registryCredentials = "dockerhub"
+        registry = "https://hub.docker.com/spottabathula69/cicd-kube-docker"
+	    registryCredentials = "dockerhub"
     }
 
     stages{
@@ -78,11 +78,8 @@ pipeline {
 				//dockerImage = docker.build.registry + ":V$BUILD_NUMBER"
                 def dockerImage = "${docker.build.registry}:V${BUILD_NUMBER}"
                 echo "Building Docker image: ${dockerImage}"
-                
-                // Build and push Docker image
                 docker.build(dockerImage, '.')
-                docker.withRegistry('https://my-docker-registry/', 'my-registry-credentials') {
-                docker.image(dockerImage).push()
+
 			}
 		}
 	}
@@ -90,6 +87,7 @@ pipeline {
 		steps {
 			script {
 				docker.withRegistry('', registryCredentials) {
+                    echo "Pushing Docker image:"
 					dockerImage.push("V$BUILD_NUMBER")
 					dockerImage.push("latest")
 				}
@@ -98,7 +96,7 @@ pipeline {
 	}
         stage("Remove Unused docker Image") {
                 steps {
-			sh "docker rmi $registry:V$BUILD_NUMBER"
+			        sh "docker rmi $registry:V$BUILD_NUMBER"
                 }
         }
 
