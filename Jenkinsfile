@@ -7,8 +7,8 @@ pipeline {
     }
 */
     environment {
-        registry = "https://hub.docker.com/spottabathula69/cicd-kube-docker"
-	    registryCredentials = "dockerhub"
+        registry = "spottabathula69/cicd-kube-docker"
+        registryCredentials = "dockerhub"
     }
 
     stages{
