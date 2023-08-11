@@ -75,6 +75,7 @@ pipeline {
 	stage("Buid App Image") {
 		steps {
 			script {
+                echo " Start build docker image"
 				//dockerImage = docker.build.registry + ":V$BUILD_NUMBER"
                 def dockerImage = "${docker.build.registry}:V${BUILD_NUMBER}"
                 echo "Building Docker image: ${dockerImage}"
